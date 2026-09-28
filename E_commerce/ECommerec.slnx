@@ -1,7 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/ECommerec.API/ECommerec.API.csproj" />
-    <Project Path="src/ECommerec.BLL/ECommerec.BLL.csproj" />
-    <Project Path="src/ECommerec.DAL/ECommerec.DAL.csproj" />
-  </Folder>
-</Solution>
