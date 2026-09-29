@@ -1,5 +1,6 @@
 using HealthCareSystem.DAL.Data;
 using HealthCareSystem.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthCareSystem.DAL
 {
@@ -28,7 +29,9 @@ namespace HealthCareSystem.DAL
 
         public IEnumerable<Patient> GetPatients()
         {
-            List<Patient> Patients = _context.Patients.ToList();
+            List<Patient> Patients = _context.Patients
+                .Include(x=>x.Issues)
+                .ToList();
             return Patients;
         }
 

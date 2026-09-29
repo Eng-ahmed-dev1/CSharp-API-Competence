@@ -44,7 +44,9 @@ namespace HealthCareSystem.APIs.Controllers
             {
                 return BadRequest();
             }
+            
             var patientId = _service.Add(patient);
+            if(patientId == -1)return BadRequest();
             return CreatedAtAction(nameof(Get), new { id = patientId }, new { Message = "Created successfully" });
         }
 

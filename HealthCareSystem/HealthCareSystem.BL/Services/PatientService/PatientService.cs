@@ -1,24 +1,33 @@
 using HealthCareSystem.BL.DTOs;
 using HealthCareSystem.DAL;
 using HealthCareSystem.DAL.Models;
+using System.Net.WebSockets;
 
 namespace HealthCareSystem.BL;
 
 public class PatientService : IPatientService
 {
     public readonly IPatientRepo _Repo;
-    public PatientService(IPatientRepo repo)
+    private readonly IDoctorRepo _doctorRepo;
+    public PatientService(IPatientRepo repo , IDoctorRepo doctorRepo)
     {
         _Repo = repo;
+        _doctorRepo = doctorRepo;
     }
 
     public int Add(PatientWriteDTO patientDto)
     {
+
         Patient patientToAdd = new Patient()
         {
             Name = patientDto.Name,
             DoctorId = patientDto.DoctorId
         };
+        var doctor = _doctorRepo.GetById(patientDto.DoctorId);
+        if (doctor is null)
+        {
+            return -1;
+        }
         _Repo.Add(patientToAdd);
         _Repo.SaveChanges();
         return patientToAdd.Id;
