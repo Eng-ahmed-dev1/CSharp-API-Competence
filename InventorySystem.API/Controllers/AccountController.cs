@@ -58,10 +58,6 @@ namespace InventorySystem.API.Controllers
                 new Claim(ClaimTypes.Email , UserName.Email),
                 new Claim("Department" , UserName.department)
             };
-            // [FIX 3]: تم تعديل الـ secretkey ليتطابق تماماً مع الـ secretKey الموجود في Program.cs
-            // في الكود القديم كان فيه زيادة "sfl" في نهاية الـ String مما يسبب 401 Unauthorized لعدم تطابق الـ Signature
-            // OLD CODE:
-            // var secretkey = "AhmedAlaaAhmedAliKassemAlHais1256687981981651981968lkdshfsdlkfsdflsfl";
             var secretkey = "AhmedAlaaAhmedAliKassemAlHais1256687981981651981968lkdshfsdlkfsdfl";
             var keyInAscil = Encoding.UTF8.GetBytes(secretkey);
             var key = new SymmetricSecurityKey(keyInAscil);
@@ -77,7 +73,7 @@ namespace InventorySystem.API.Controllers
             );
             var tokenHandler = new JwtSecurityTokenHandler();
             string tokenString = tokenHandler.WriteToken(token);
-            return Ok(new { msg = tokenString });
+            return Ok(tokenString);
         }
     }
 }
