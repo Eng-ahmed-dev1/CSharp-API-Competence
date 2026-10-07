@@ -17,12 +17,19 @@ namespace InventorySystem.DAL
 
 
         public async Task<IReadOnlyList<Order>> GetAllAsync()
-        => await _context.Orders.ToListAsync();
+        => await _context.Orders
+        .Include(x => x.Items).ThenInclude(x => x.Product)
+        .ToListAsync();
 
 
         public async Task<Order?> GetByIdAsync(int id)
         => await _context.Orders.FindAsync(id);
 
+        public Task<Order?> GetByIdWithItemsAsync(int id)
+         => _context.Orders
+         .Include(o => o.Items)
+             .ThenInclude(i => i.Product)
+         .FirstOrDefaultAsync(o => o.Id == id);
 
         public Task<int> SaveChangesAsync()
         => _context.SaveChangesAsync();

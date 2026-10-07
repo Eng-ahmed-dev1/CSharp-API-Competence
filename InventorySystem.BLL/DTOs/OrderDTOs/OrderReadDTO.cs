@@ -11,5 +11,6 @@ namespace InventorySystem.BLL
         public decimal TotalAmount { get; set; }
         public string PaymentMethod { get; set; } = string.Empty;
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
+        public List<OrderItemReadDTO> Items { get; set; } = new();
     }
 }

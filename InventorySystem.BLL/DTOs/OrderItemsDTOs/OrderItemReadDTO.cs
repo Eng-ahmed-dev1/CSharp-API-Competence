@@ -1,12 +1,10 @@
-﻿using Inventory.DAL;
-
-namespace InventorySystem.BLL
+﻿namespace InventorySystem.BLL
 {
     public class OrderItemReadDTO
     {
-        public int Id { get; set; } 
-        public int OrderId { get; set; }
         public int ProductId { get; set; }
+        public string ProductName { get; set; } = string.Empty;
         public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
     }
 }

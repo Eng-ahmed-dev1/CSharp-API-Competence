@@ -1,4 +1,9 @@
 
+using Inventory.DAL;
+using InventorySystem.BLL;
+using InventorySystem.DAL;
+using Microsoft.EntityFrameworkCore;
+
 namespace InventorySystem.API
 {
     public class Program
@@ -13,6 +18,11 @@ namespace InventorySystem.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             var app = builder.Build();
 

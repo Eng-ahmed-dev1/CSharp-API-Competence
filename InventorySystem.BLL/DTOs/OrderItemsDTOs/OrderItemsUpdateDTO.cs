@@ -1,6 +1,4 @@
-﻿using Inventory.DAL;
-
-namespace InventorySystem.BLL
+﻿namespace InventorySystem.BLL
 {
     public class OrderItemsUpdateDTO
     {

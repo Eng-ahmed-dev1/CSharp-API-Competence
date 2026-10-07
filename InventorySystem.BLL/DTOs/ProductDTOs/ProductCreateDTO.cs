@@ -1,6 +1,6 @@
 ﻿namespace InventorySystem.BLL
 {
-    public class ProductCreateDTO
+    public class    ProductCreateDTO
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
