@@ -1,16 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
-using Azure.Identity;
 using InventorySystem.BLL.DTOs.AccountDTOs;
 using InventorySystem.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
 
 namespace InventorySystem.API.Controllers
 {
@@ -23,7 +18,7 @@ namespace InventorySystem.API.Controllers
         {
             _userManger = user;
         }
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterDTO dto)
         {
             var user = new ApplicationUser
@@ -47,7 +42,7 @@ namespace InventorySystem.API.Controllers
             }
             return Ok("The User Created Sucessfully .!");
         }
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(LoginDTO dto)
         {
             var UserName = await _userManger.FindByNameAsync(dto.UserName);
@@ -61,10 +56,14 @@ namespace InventorySystem.API.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier , UserName.Id.ToString()),
                 new Claim(ClaimTypes.Email , UserName.Email),
-                new Claim("Dempartment" , UserName.department)
+                new Claim("Department" , UserName.department)
             };
-            var secretkey = "AhmedAlaaAhmedAliKassemAlHais1256687981981651981968lkdshfsdlkfsdflsfl";
-            var keyInAscil = Encoding.ASCII.GetBytes(secretkey);
+            // [FIX 3]: تم تعديل الـ secretkey ليتطابق تماماً مع الـ secretKey الموجود في Program.cs
+            // في الكود القديم كان فيه زيادة "sfl" في نهاية الـ String مما يسبب 401 Unauthorized لعدم تطابق الـ Signature
+            // OLD CODE:
+            // var secretkey = "AhmedAlaaAhmedAliKassemAlHais1256687981981651981968lkdshfsdlkfsdflsfl";
+            var secretkey = "AhmedAlaaAhmedAliKassemAlHais1256687981981651981968lkdshfsdlkfsdfl";
+            var keyInAscil = Encoding.UTF8.GetBytes(secretkey);
             var key = new SymmetricSecurityKey(keyInAscil);
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -73,7 +72,7 @@ namespace InventorySystem.API.Controllers
             audience: "Frontend",
             signingCredentials: signIn,
             claims: Claims,
-            notBefore: DateTime.Now,
+            notBefore: DateTime.UtcNow,
             expires: DateTime.UtcNow.AddMinutes(15)
             );
             var tokenHandler = new JwtSecurityTokenHandler();

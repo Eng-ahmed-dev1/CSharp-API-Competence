@@ -1,9 +1,11 @@
 using InventorySystem.BLL;
 using InventorySystem.BLL.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventorySystem.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class OrderController : ControllerBase
@@ -13,6 +15,7 @@ namespace InventorySystem.API.Controllers
         {
             _service = Order;
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<OrderReadDTO>>> GetAll()
         {
