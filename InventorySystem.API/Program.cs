@@ -32,9 +32,6 @@ namespace InventorySystem.API
             builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            // ==========================================
-            // TODO: اكتب كود الـ JWT Authentication هنا
-            // ==========================================
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
